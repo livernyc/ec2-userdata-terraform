@@ -7,7 +7,7 @@ resource "aws_security_group" "web-pub-sg" {
     from_port   = "3389"
     to_port     = "3389"
     protocol    = "tcp"
-    cidr_blocks = ["147.219.191.0/24"]
+    cidr_blocks = ["71.255.56.112/32"]
   }
   egress {
     cidr_blocks = ["0.0.0.0/0"]
