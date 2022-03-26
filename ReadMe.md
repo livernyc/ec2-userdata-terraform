@@ -18,3 +18,5 @@ Ensure that the IAM user whose credentials are being used in this configuration 
 If you want to have fun, try the following:
 <br />Update the security group and see how it impacts your web access: remove the `egress` block.
 <br />Update the route table and see how it impacts your web access: remove the `0.0.0.0/0` route.
+
+## Chris's Version
