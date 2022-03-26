@@ -28,6 +28,15 @@ if (-not(Test-Path "C:\UserDataLog"))
 Write-Log -Message "Userdata is stored at : $PSScriptRoot"
 Write-Log -Message "Userdata script is stored at : $PSScriptRoot"
 
+if (-not(Test-Path "C:\Program Files\Notepad++\notepad++.exe"))
+{
+Write-Log -Message "Download and install Notepad++"    
+cd c:\UserDataLog
+Invoke-WebRequest https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.3.3/npp.8.3.3.Installer.x64.exe -OutFile npp.8.3.3.Installer.x64.exe
+.\npp.8.3.3.Installer.x64.exe /S
+sleep 30
+}
+
 #Check Computer ServerName
 if ($env:COMPUTERNAME -eq $ServerName)
 {
@@ -37,12 +46,4 @@ if ($env:COMPUTERNAME -eq $ServerName)
     Rename-Computer -NewName $ServerName -Restart -Force
     Write-Log -Message "The machine will be renamed and restarted."
 }
-if ((Get-WindowsFeature Web-Server).installed -ne 'True')
-{
-    Write-Log -Message "Windows feature is not installed."
-} else
-{
-    Write-Log -Message "Windows feature is already installed."
-}
 </powershell>
-<persist>true</persist> 
