@@ -23,5 +23,5 @@ variable "ServerName1" {
 } 
 variable "ServerName2" {
   type = string
-  default = "test-win-machine"
+  default = "test-lin-machine"
 }

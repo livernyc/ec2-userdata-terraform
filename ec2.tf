@@ -67,9 +67,9 @@ resource "aws_instance" "win-app-server" {
   }
 }
 data "aws_ssm_parameter" "linux-ami" {
-    name   = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+  name   = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
 }
-resource "aws_instance" "Lin-app-server" {
+resource "aws_instance" "lin-app-server" {
   instance_type          = "t2.micro"
   ami                    = data.aws_ssm_parameter.linux-ami.id
   vpc_security_group_ids = [aws_security_group.web-pub-sg.id]
