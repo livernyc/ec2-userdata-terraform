@@ -9,6 +9,20 @@ resource "aws_security_group" "web-pub-sg" {
     protocol    = "tcp"
     cidr_blocks = ["71.255.56.112/32"]
   }
+  ingress {
+    description = "Allow SSH traffic"
+    from_port   = "22"
+    to_port     = "22"
+    protocol    = "tcp"
+    cidr_blocks = ["71.255.56.112/32"]
+  }
+  ingress {
+    description = "allow traffic from TCP/80"
+    from_port   = "80"
+    to_port     = "80"
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }  
   egress {
     cidr_blocks = ["0.0.0.0/0"]
     from_port   = "0"
@@ -35,20 +49,8 @@ data "aws_ami" "windows-ami" {
   most_recent = true
   owners      = ["amazon"]
 }
-// resource "aws_instance" "app-server" {
-//   instance_type = "t2.micro"
-//   ami           = data.aws_ami.windows-ami.id
-//   network_interface {
-//     network_interface_id = aws_network_interface.this-nic.id
-//     device_index         = 0
-//     delete_on_termination = false
-//   }
-//   key_name = "skundu-sandbox"
-//   tags = {
-//     Name = "app-server-1"
-//   }
-// }
-resource "aws_instance" "app-server2" {
+
+resource "aws_instance" "win-app-server" {
   instance_type          = "t2.micro"
   ami                    = data.aws_ami.windows-ami.id
   vpc_security_group_ids = [aws_security_group.web-pub-sg.id]
@@ -57,10 +59,29 @@ resource "aws_instance" "app-server2" {
   key_name               = "skundu-sandbox"
   user_data = templatefile("user_data/user_data.tpl",
     {
-      ServerName = var.ServerName
+      ServerName = var.ServerName1
   })
   associate_public_ip_address = true
   tags = {
-    Name = "app-server-2"
+    Name = "app-server-win"
+  }
+}
+data "aws_ssm_parameter" "linux-ami" {
+    name   = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+}
+resource "aws_instance" "Lin-app-server" {
+  instance_type          = "t2.micro"
+  ami                    = data.aws_ssm_parameter.linux-ami.id
+  vpc_security_group_ids = [aws_security_group.web-pub-sg.id]
+  subnet_id              = aws_subnet.public.id
+  private_ip             = "10.20.20.123"
+  key_name               = "skundu-sandbox"
+  user_data = templatefile("user_data/user_data_lin.tpl",
+    {
+      ServerName = var.ServerName2
+  })
+  associate_public_ip_address = true
+  tags = {
+    Name = "app-server-lin"
   }
 }

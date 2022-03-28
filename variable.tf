@@ -17,7 +17,11 @@ variable "private_ip_address" {
   default = "10.20.20.120"
 
 }
-variable "ServerName" {
+variable "ServerName1" {
   type = string
-  default = "test-Notepad-machine"
+  default = "test-win-machine"
 } 
+variable "ServerName2" {
+  type = string
+  default = "test-win-machine"
+}

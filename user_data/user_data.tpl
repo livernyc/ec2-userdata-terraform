@@ -37,6 +37,18 @@ Invoke-WebRequest https://github.com/notepad-plus-plus/notepad-plus-plus/release
 sleep 30
 }
 
+<#
+#Check Windows feature 
+if ((Get-WindowsFeature Web-Server).installed -ne 'True')
+{
+    Write-Log -Message "Windows feature is not installed and will be installed."
+    Install-WindowsFeature -Name Web-Server -IncludeAllSubFeature
+} else
+{
+    Write-Log -Message "Windows feature is already installed."
+}
+#>
+
 #Check Computer ServerName
 if ($env:COMPUTERNAME -eq $ServerName)
 {
@@ -47,3 +59,4 @@ if ($env:COMPUTERNAME -eq $ServerName)
     Write-Log -Message "The machine will be renamed and restarted."
 }
 </powershell>
+# <persist>true</persist>
