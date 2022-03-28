@@ -14,7 +14,7 @@ function Write-Log {
     } | Export-Csv -Path "c:\UserDataLog\UserDataLogFile.log" -Append -NoTypeInformation
  }
 #Read input variables
-$ServerName = "${ServerName}"
+$ServerName = "${ServerName1}"
 
 #Create log file location
 if (-not(Test-Path "C:\UserDataLog"))
@@ -50,7 +50,7 @@ if ((Get-WindowsFeature Web-Server).installed -ne 'True')
 #>
 
 #Check Computer ServerName
-if ($env:COMPUTERNAME -eq $ServerName)
+if ($env:COMPUTERNAME -eq $ServerName1)
 {
     Write-Log -Message "The name of the machine is correct: $env:COMPUTERNAME"
 } else {

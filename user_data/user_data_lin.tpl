@@ -5,5 +5,5 @@ wget https://github.com/livernyc/ec2-userdata-terraform/tree/main/user_data/defa
 yum -y install httpd && sudo systemctl start httpd
 mv ./default_linux.html /var/www/html/index.html
 echo "Changing Hostname"
-#hname="$ServerName"
-echo "$ServerName" > /etc/hostname
+#hname="$ServerName2"
+echo "$ServerName2" > /etc/hostname
