@@ -43,6 +43,9 @@ if ((Get-WindowsFeature Web-Server).installed -ne 'True')
 {
     Write-Log -Message "Windows feature is not installed and will be installed."
     Install-WindowsFeature -Name Web-Server -IncludeAllSubFeature
+
+    echo '<h1><center>TerraFrom is cool with Windows!!!!</center></h1>' > C:\inetpub\wwwroot\iisstart.htm
+
 } else
 {
     Write-Log -Message "Windows feature is already installed."

@@ -1,9 +1,6 @@
 #!/bin/bash
 mkdir /home/root/www/
 cd /home/root/www/
-wget https://github.com/livernyc/ec2-userdata-terraform/tree/main/user_data/default_linux.html
+echo '<h1><center>TerraForm is cool with Linux!!!!</center></h1>' > index.html
 yum -y install httpd && sudo systemctl start httpd
-mv ./default_linux.html /var/www/html/index.html
-echo "Changing Hostname"
-#hname="$ServerName2"
-echo "$ServerName2" > /etc/hostname
+mv ./index.html /var/www/html/index.html
