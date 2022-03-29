@@ -33,6 +33,7 @@ resource "aws_security_group" "web-pub-sg" {
     "Name" = "Application-1-sg"
   }
 }
+
 data "aws_ami" "windows-ami" {
   filter {
     name   = "name"
@@ -59,26 +60,45 @@ resource "aws_instance" "win-app-server" {
   key_name               = "skundu-sandbox"
   user_data = templatefile("user_data/user_data.tpl",
     {
-      ServerName = var.ServerName1
+      ServerName1 = var.ServerName1
   })
   associate_public_ip_address = true
   tags = {
     Name = "app-server-win"
   }
 }
-data "aws_ssm_parameter" "linux-ami" {
-  name   = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
-}
+
+data "aws_ami" "amzlinux" {
+  most_recent = true
+  owners = ["amazon"]
+  filter {
+    name = "name"
+    values = ["amzn2-ami-hvm-*-gp2"]
+  }
+  filter {
+    name = "root-device-type"
+    values = ["ebs"]
+  }
+  filter {
+  name = "virtualization-type"
+  values = ["hvm"]
+  }
+  filter {
+  name = "architecture"
+  values = ["x86_64"]
+  }  
+} 
+
 resource "aws_instance" "lin-app-server" {
   instance_type          = "t2.micro"
-  ami                    = data.aws_ssm_parameter.linux-ami.id
+  ami                    = data.aws_ami.amzlinux.id
   vpc_security_group_ids = [aws_security_group.web-pub-sg.id]
   subnet_id              = aws_subnet.public.id
   private_ip             = "10.20.20.123"
   key_name               = "skundu-sandbox"
   user_data = templatefile("user_data/user_data_lin.tpl",
     {
-      ServerName = var.ServerName2
+      ServerName2 = var.ServerName2
   })
   associate_public_ip_address = true
   tags = {
